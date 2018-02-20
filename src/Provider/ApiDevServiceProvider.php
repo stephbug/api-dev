@@ -36,7 +36,7 @@ class ApiDevServiceProvider extends ServiceProvider
     protected function registerServices(): void
     {
         foreach ($this->getServicesFromConfig() as $abstract => $concrete) {
-            $this->app->bind($abstract, $concrete);
+            $this->app->bindIf($abstract, $concrete);
         }
     }
 
