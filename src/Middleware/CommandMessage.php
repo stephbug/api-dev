@@ -12,6 +12,7 @@ use StephBug\ApiDev\MetadataGatherer;
 use StephBug\ApiDev\Response\ApiResponse;
 use StephBug\ApiDev\Response\ResponseStrategy;
 use StephBug\ServiceBus\Bus\CommandBus;
+use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Response;
 
 class CommandMessage
@@ -82,9 +83,14 @@ class CommandMessage
 
     protected function createMessage(string $commandName, Request $request): Message
     {
+        $payload = $request->json();
+        if ($payload instanceof ParameterBag) {
+            $payload = $payload->all();
+        }
+
         return $this->messageFactory->createMessageFromArray(
             $commandName, [
-                'payload' => $request->json()->all(),
+                'payload' => $payload,
                 'metadata' => $this->metadataGatherer->fromRequest($request)
             ]
         );
