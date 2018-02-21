@@ -84,7 +84,7 @@ class CommandMessage
     {
         return $this->messageFactory->createMessageFromArray(
             $commandName, [
-                'payload' => $request->json(),
+                'payload' => $request->json()->all(),
                 'metadata' => $this->metadataGatherer->fromRequest($request)
             ]
         );
