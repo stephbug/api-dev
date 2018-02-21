@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace StephBug\ApiDev\Exception;
 
-class MissingMessageNameAttribute extends ApiDevException
+class MissingMessageNameAttribute extends RuntimeException
 {
     public static function withKeys(string $attribute, string $busType): self
     {

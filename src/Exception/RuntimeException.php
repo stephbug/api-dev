@@ -6,6 +6,6 @@ namespace StephBug\ApiDev\Exception;
 
 use StephBug\ApiDev\Exception\Contract\ApiException;
 
-class ApiDevException extends \RuntimeException implements ApiException
+class RuntimeException extends \RuntimeException implements ApiException
 {
 }

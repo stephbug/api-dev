@@ -6,7 +6,7 @@ namespace StephBug\ApiDev\Middleware;
 
 use Illuminate\Http\Request;
 use Prooph\Common\Messaging\MessageFactory;
-use StephBug\ApiDev\Exception\ApiDevException;
+use StephBug\ApiDev\Exception\RuntimeException;
 use StephBug\ApiDev\Exception\MissingMessageNameAttribute;
 use StephBug\ApiDev\MetadataGatherer;
 use StephBug\ApiDev\Response\ResponseStrategy;
@@ -67,7 +67,7 @@ class QueryMessage
 
             return $this->responseStrategy->fromPromise($this->queryBus->dispatch($query));
         } catch (\Throwable $exception) {
-            throw new ApiDevException(
+            throw new RuntimeException(
                 sprintf('An error occurred during dispatching of query "%s"', $queryName),
                 Response::HTTP_INTERNAL_SERVER_ERROR,
                 $exception

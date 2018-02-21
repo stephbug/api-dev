@@ -6,7 +6,8 @@ namespace StephBug\ApiDev\Middleware;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use StephBug\ApiDev\Exception\ApiDevException;
+use StephBug\ApiDev\Exception\Contract\ApiException;
+use StephBug\ApiDev\Exception\RuntimeException;
 use Symfony\Component\HttpFoundation\Response;
 
 class JsonMessage
@@ -37,19 +38,20 @@ class JsonMessage
 
         switch (json_last_error()) {
             case JSON_ERROR_DEPTH:
-                throw new ApiDevException('Invalid JSON, maximum stack depth exceeded.', $statusCode);
+                throw new RuntimeException('Invalid JSON, maximum stack depth exceeded.', $statusCode);
             case JSON_ERROR_UTF8:
-                throw new ApiDevException('Malformed UTF-8 characters, possibly incorrectly encoded.', $statusCode);
+                throw new RuntimeException('Malformed UTF-8 characters, possibly incorrectly encoded.', $statusCode);
             case JSON_ERROR_SYNTAX:
             case JSON_ERROR_CTRL_CHAR:
             case JSON_ERROR_STATE_MISMATCH:
-                throw new ApiDevException('Invalid JSON.', $statusCode);
+                throw new RuntimeException('Invalid JSON.', $statusCode);
         }
     }
 
     private function onException(Request $request, \Throwable $exception): Response
     {
-        if ($request->expectsJson()) {
+        // dev
+        if ($request->expectsJson() || $exception instanceof ApiException) {
             return new JsonResponse([
                 'data' => [
                     'message' => $exception->getMessage(),
