@@ -6,8 +6,8 @@ namespace StephBug\ApiDev\Middleware;
 
 use Illuminate\Http\Request;
 use Prooph\Common\Messaging\MessageFactory;
-use StephBug\ApiDev\Exception\RuntimeException;
 use StephBug\ApiDev\Exception\MissingMessageNameAttribute;
+use StephBug\ApiDev\Exception\RuntimeException;
 use StephBug\ApiDev\MetadataGatherer;
 use StephBug\ApiDev\Response\ResponseStrategy;
 use StephBug\ServiceBus\Bus\QueryBus;
@@ -55,8 +55,9 @@ class QueryMessage
         $payload = (array)$request->query();
 
         if ($request->isMethod('POST')) {
-            //$payload['data'] = (array) json_decode($request->getContent(), true);
-            $payload += (array) json_decode($request->getContent(), true);
+            // $payload['data'] = (array) json_decode($request->getContent(), true);
+            // $payload += (array) json_decode($request->getContent(), true);
+            $payload += $request->json();
         }
 
         try {
