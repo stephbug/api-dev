@@ -6,7 +6,7 @@ namespace StephBug\ApiDev\Response;
 
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Http\JsonResponse as IlluminateJsonResponse;
-use Prooph\ServiceBus\Exception\CommandDispatchException;
+use Prooph\ServiceBus\Exception\MessageDispatchException;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -41,7 +41,7 @@ abstract class AbstractApiResponse implements ApiResponse
 
     public function respondTo(\Throwable $exception): Response
     {
-        if ($exception instanceof CommandDispatchException) {
+        if ($exception instanceof MessageDispatchException) {
             if ($previousException = $exception->getPrevious()) {
                 $exception = $previousException;
             }
